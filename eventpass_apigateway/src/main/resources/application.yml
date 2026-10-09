@@ -1,35 +1,36 @@
 spring:
-    application:
-        name: eventpass_apigateway
-    cloud:
-      gateway:
-        server:
-          webflux:
-            enabled: true
-            routes:
-              - id: users-service
-                uri: ${MS-USERS-URL:http://localhost:8084}
-                predicates:
-                  - Path=/api/auth/**
-              - id: events-service
-                uri:
-                  ${MS-EVENTS-URL:http://localhost:8080}
-                predicates:
-                  - Path=/api/events/** , /api/ticket
-              - id: orders-service
-                uri:
-                  ${MS-ORDERS-URL:http://localhost:8081}
-                predicates:
-                  - Path=/api/orders/**
-              - id: payments-service
-                uri:
-                  ${MS-PAYMENT-URL:http://localhost:8082}
-                predicates:
-                  - Path=/api/payments/**
-              - id: tickets-service
-                uri:
-                  ${MS-TICKET-URL:http://localhost:8083}
-                predicates:
+  application:
+    name: eventpass_apigateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          enabled: true
+          routes:
+            - id: users-service
+              uri: ${MS-USERS-URL:http://localhost:8084}
+              predicates:
+                - Path=/api/auth/**
+            - id: events-service
+              uri:
+                ${MS-EVENTS-URL:http://localhost:8080}
+              predicates:
+                - Path=/api/events/** , /api/ticket
+            - id: orders-service
+              uri:
+                ${MS-ORDERS-URL:http://localhost:8081}
+              predicates:
+                - Path=/api/orders/**
+            - id: payments-service
+              uri:
+                ${MS-PAYMENT-URL:http://localhost:8082}
+              predicates:
+                - Path=/api/payments/**
+            - id: tickets-service
+              uri:
+                ${MS-TICKET-URL:http://localhost:8083}
+              predicates:
+                - Path=/api/tickets/**
 
 server:
   port: 8085
