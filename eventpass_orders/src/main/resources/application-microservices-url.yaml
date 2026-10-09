@@ -1,0 +1,5 @@
+microservices:
+  events:
+    url: ${MS-EVENTS-URL:http://localhost:8080/api}
+  tickets:
+    url: ${MS-TICKETS-URL:http:/localhost:8083/api}

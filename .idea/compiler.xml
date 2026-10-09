@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Annotation profile for eventpass_apigateway" enabled="true">
+        <sourceOutputDir name="../generated-sources/annotations" />
+        <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
+        <processorPath useClasspath="false">
+          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
+          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
+        </processorPath>
+        <module name="eventpass_apigateway.main" />
+        <module name="eventpass_apigateway.test" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eventpass-eventos" options="-parameters" />
+      <module name="eventpass-eventos.main" options="-parameters" />
+      <module name="eventpass-eventos.test" options="-parameters" />
+      <module name="eventpass_apigateway" options="-parameters" />
+      <module name="eventpass_apigateway.main" options="-parameters" />
+      <module name="eventpass_apigateway.test" options="-parameters" />
+      <module name="eventpass_orders" options="-parameters" />
+      <module name="eventpass_orders.main" options="-parameters" />
+      <module name="eventpass_orders.test" options="-parameters" />
+      <module name="eventpass_payment" options="-parameters" />
+      <module name="eventpass_payment.main" options="-parameters" />
+      <module name="eventpass_payment.test" options="-parameters" />
+      <module name="eventpass_ticket" options="-parameters" />
+      <module name="eventpass_ticket.main" options="-parameters" />
+      <module name="eventpass_ticket.test" options="-parameters" />
+      <module name="eventpass_users" options="-parameters" />
+      <module name="eventpass_users.main" options="-parameters" />
+      <module name="eventpass_users.test" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,24 @@
+spring:
+    application:
+        name: eventpass_ticket
+    main:
+      web-application-type: reactive
+
+    r2dbc:
+      url: r2dbc:${DB_URL:postgresql://localhost:5432/tickets?currentSchema=ticket}
+      username: ${DB_USER:postgres}
+      password: ${DB_PWD:root}
+
+    flyway:
+      enabled: true
+      url: jdbc:${spring.r2dbc.url}
+      user: ${spring.r2dbc.username}
+      password: ${spring.r2dbc.password}
+      baseline-on-migrate: true
+      default-schema: ticket
+
+    output:
+      ansi:
+        enabled: always
+server:
+  port: 8083
