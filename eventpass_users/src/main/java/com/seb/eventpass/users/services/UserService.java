@@ -7,7 +7,7 @@ import com.seb.eventpass.users.models.UserEventPass;
 import reactor.core.publisher.Mono;
 
 public interface UserService {
-    Mono<UserEventPass> register(CreateUserDTO createUserDTO);
+    Mono<TokenResponseDTO> register(CreateUserDTO createUserDTO);
     Mono<TokenResponseDTO> login(LoginRequestDTO loginRequestDTO);
 
 

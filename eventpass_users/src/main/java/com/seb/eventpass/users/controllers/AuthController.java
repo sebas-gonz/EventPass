@@ -18,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<UserEventPass> register(@RequestBody Mono<CreateUserDTO> createUserDTOMono){
+    public Mono<TokenResponseDTO> register(@RequestBody Mono<CreateUserDTO> createUserDTOMono){
         return  createUserDTOMono
                 .flatMap(userService::register);
 
