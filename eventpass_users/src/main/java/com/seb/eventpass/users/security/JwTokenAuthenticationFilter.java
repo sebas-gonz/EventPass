@@ -21,13 +21,13 @@ import java.util.List;
 
 @Component
 public class JwTokenAuthenticationFilter implements WebFilter {
-    @Value("${SECRET_TOKEN_KEY}")
-    private static String SECRET_KEY;
+    @Value("${secret.token.key}")
+    private String SECRET_KEY;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
         String token = authHeader.replace("Bearer ", "");

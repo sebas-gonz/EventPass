@@ -6,7 +6,7 @@ import com.seb.eventpass.orders.dto.rest.TicketEventCategoryDTO;
 import com.seb.eventpass.orders.models.TicketOrder;
 import com.seb.eventpass.orders.repositories.OrderRepository;
 import com.seb.eventpass.orders.repositories.TicketOrderRepository;
-import com.seb.eventpass.orders.rest.EventWebClient;
+import com.seb.eventpass.orders.rest.EventClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -19,7 +19,7 @@ import java.util.UUID;
 public class TickerOrderServiceImpl implements  TicketOrderService{
     private final TicketOrderRepository ticketOrderRepository;
     private final OrderRepository orderRepository;
-    private final EventWebClient eventWebClient;
+    private final EventClient eventWebClient;
 
     @Override
     public Mono<TicketOrderedDTO> createTicketCategory(CreateOrderTicketDTO createOrderTicketDTO, UUID eventId, Long orderId) {

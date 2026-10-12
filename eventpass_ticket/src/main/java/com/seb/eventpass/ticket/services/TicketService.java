@@ -5,11 +5,12 @@ import com.seb.eventpass.ticket.dto.response.TicketDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface TicketService {
     Mono<TicketDTO> createTicket(CreateTicketDTO createTicketDTO);
-    Flux<TicketDTO> createTickets(Flux<CreateTicketDTO> createTicketDTO);
+    Flux<TicketDTO> createTickets(List<CreateTicketDTO> createTicketDTO);
 
     Mono<TicketDTO> getTicketByUuid(UUID uuid);
 

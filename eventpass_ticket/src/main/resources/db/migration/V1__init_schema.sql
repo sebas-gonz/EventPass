@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS tickets;
+CREATE SCHEMA IF NOT EXISTS ticket;
 
-CREATE TABLE tickets.ticket
+CREATE TABLE tickets
 (
     id                         BIGSERIAL PRIMARY KEY,
     payment_uuid               UUID         NOT NULL,
@@ -17,8 +17,8 @@ CREATE TABLE tickets.ticket
     uuid                       UUID         NOT NULL UNIQUE
 );
 
-CREATE INDEX idx_tickets_uuid ON tickets.ticket (uuid);
-CREATE INDEX idx_tickets_user_uuid ON tickets.ticket (user_uuid);
-CREATE INDEX idx_tickets_order_uuid ON tickets.ticket (order_uuid);
-CREATE INDEX idx_tickets_ticket_code ON tickets.ticket (ticket_code);
-CREATE INDEX idx_tickets_events_category_uuid ON tickets.ticket (ticket_event_category_uuid)
+CREATE INDEX idx_tickets_uuid ON tickets (uuid);
+CREATE INDEX idx_tickets_user_uuid ON tickets (user_uuid);
+CREATE INDEX idx_tickets_order_uuid ON tickets (order_uuid);
+CREATE INDEX idx_tickets_ticket_code ON tickets (ticket_code);
+CREATE INDEX idx_tickets_events_category_uuid ON tickets (ticket_event_category_uuid)

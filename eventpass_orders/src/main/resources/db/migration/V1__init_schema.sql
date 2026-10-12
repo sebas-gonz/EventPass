@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS orders;
 
-CREATE TABLE orders.orders (
+CREATE TABLE orders (
                                id BIGSERIAL PRIMARY KEY,
                                event_uuid UUID NOT NULL,
                                user_uuid UUID NOT NULL,
@@ -13,11 +13,11 @@ CREATE TABLE orders.orders (
                                updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                                uuid UUID NOT NULL UNIQUE
 );
-CREATE INDEX idx_orders_uuid ON orders.orders(uuid);
-CREATE INDEX idx_orders_user_uuid ON orders.orders(user_uuid);
-CREATE INDEX idx_orders_event_uuid ON orders.orders(event_uuid);
+CREATE INDEX idx_orders_uuid ON orders(uuid);
+CREATE INDEX idx_orders_user_uuid ON orders(user_uuid);
+CREATE INDEX idx_orders_event_uuid ON orders(event_uuid);
 
-CREATE TABLE orders.ticket_order (
+CREATE TABLE ticket_order (
                                      id BIGSERIAL PRIMARY KEY,
                                      ticket_category_uuid UUID NOT NULL,
                                      ticket_category_name VARCHAR(100) NOT NULL,
@@ -32,8 +32,8 @@ CREATE TABLE orders.ticket_order (
 
                                      CONSTRAINT fk_ticket_order_order
                                          FOREIGN KEY (order_id)
-                                             REFERENCES orders.orders(id)
+                                             REFERENCES orders(id)
                                              ON DELETE CASCADE
 );
-CREATE INDEX idx_ticket_order_uuid ON orders.ticket_order(uuid);
-CREATE INDEX idx_ticket_order_order_id ON orders.ticket_order(order_id);
+CREATE INDEX idx_ticket_order_uuid ON ticket_order(uuid);
+CREATE INDEX idx_ticket_order_order_id ON ticket_order(order_id);

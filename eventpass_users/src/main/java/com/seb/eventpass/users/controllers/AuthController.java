@@ -5,6 +5,7 @@ import com.seb.eventpass.users.dto.requests.LoginRequestDTO;
 import com.seb.eventpass.users.dto.responses.TokenResponseDTO;
 import com.seb.eventpass.users.models.UserEventPass;
 import com.seb.eventpass.users.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +19,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<TokenResponseDTO> register(@RequestBody Mono<CreateUserDTO> createUserDTOMono){
+    public Mono<TokenResponseDTO> register(@Valid @RequestBody Mono<CreateUserDTO> createUserDTOMono){
         return  createUserDTOMono
                 .flatMap(userService::register);
 
     }
 
     @PostMapping("/login")
-    public Mono<TokenResponseDTO> login(@RequestBody Mono<LoginRequestDTO> loginRequestDTOMono){
+    public Mono<TokenResponseDTO> login(@Valid @RequestBody Mono<LoginRequestDTO> loginRequestDTOMono){
         return loginRequestDTOMono.flatMap(userService::login);
     }
 }

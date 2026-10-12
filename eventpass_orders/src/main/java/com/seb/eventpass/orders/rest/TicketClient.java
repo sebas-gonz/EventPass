@@ -8,16 +8,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class TicketWebClient {
+public class TicketClient {
     private final WebClient ticketWebClient;
 
-    public Mono<Void> createTicket(Flux<TicketDTO> ticketDTOFlux) {
+    public Mono<Void> createTicket(List<TicketDTO> ticketDTOFlux) {
         return ticketWebClient.post()
-                .uri("/api/")
+                .uri("/internal/ticket/saveall")
                 .accept(MediaType.APPLICATION_JSON)
-                .body(ticketDTOFlux, TicketDTO.class)
+                .bodyValue(ticketDTOFlux)
                 .retrieve()
                 .bodyToMono(Void.class);
     }

@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 @Order(-1)
 public class JwtAuthenticationFilter implements GlobalFilter {
-    @Value("${SECRET_TOKEN_KEY}")
+    @Value("${secret.token.key}")
     private String secretKey;
 
     private final List<String> openApiEndpoints = List.of(

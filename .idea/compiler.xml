@@ -2,17 +2,26 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Annotation profile for eventpass_apigateway" enabled="true">
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for eventpass_ticket" enabled="true">
         <sourceOutputDir name="../generated-sources/annotations" />
         <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
         <processorPath useClasspath="false">
           <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
           <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
         </processorPath>
+        <module name="eventpass_orders.main" />
+        <module name="eventpass_users.test" />
+        <module name="eventpass_payment.main" />
+        <module name="eventpass_orders.test" />
+        <module name="eventpass_apigateway.test" />
         <module name="eventpass_apigateway.main" />
         <module name="eventpass_users.main" />
-        <module name="eventpass_users.test" />
-        <module name="eventpass_apigateway.test" />
+        <module name="eventpass_payment.test" />
+        <module name="eventpass_ticket.test" />
+        <module name="eventpass-eventos.test" />
+        <module name="eventpass-eventos.main" />
+        <module name="eventpass_ticket.main" />
       </profile>
     </annotationProcessing>
   </component>

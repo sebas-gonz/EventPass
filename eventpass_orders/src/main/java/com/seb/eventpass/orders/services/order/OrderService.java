@@ -13,4 +13,5 @@ public interface OrderService {
     Flux<OrderDTO> getAllOrders();
     Mono<OrderDTO> approveOrder (UUID uuid, UUID paymentUuid);
     Mono<OrderDTO> rejectOrder (UUID uuid);
+    Flux<OrderDTO> getOrdersByUserUuid(UUID userUuid);
 }

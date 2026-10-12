@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS payment;
 
-CREATE TABLE payment.payment (
+CREATE TABLE payment (
                                   id BIGSERIAL PRIMARY KEY,
 
                                   user_uuid UUID NOT NULL,
@@ -16,6 +16,6 @@ CREATE TABLE payment.payment (
                                   uuid UUID NOT NULL UNIQUE
 );
 
-CREATE INDEX idx_payment_uuid ON payments.payment(uuid);
-CREATE INDEX idx_payment_order_uuid ON payments.payment(order_uuid);
-CREATE INDEX idx_payment_user_uuid ON payments.payment(user_uuid);
+CREATE INDEX idx_payment_uuid ON payment(uuid);
+CREATE INDEX idx_payment_order_uuid ON payment(order_uuid);
+CREATE INDEX idx_payment_user_uuid ON payment(user_uuid);

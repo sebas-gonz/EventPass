@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Locale;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -27,15 +27,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Flux<TicketDTO> createTickets(Flux<CreateTicketDTO> createTicketDTO) {
-        return createTicketDTO.map(this::dtoToEntity)
-                .map(ticket -> {
-                    ticket.setTicketCode("TK" + UUID.randomUUID().toString().toUpperCase());
-                    return ticket;
-                })
-                .collectList()
-                .flatMapMany(ticketRepository::saveAll)
-                .map(this::entityToDTO);
+    public Flux<TicketDTO> createTickets(List<CreateTicketDTO> createTicketDTO) {
+        List<Ticket> ticketList = createTicketDTO.stream()
+                .map(this::dtoToEntity)
+                .peek(ticket -> ticket.setTicketCode("TK" + UUID.randomUUID().toString().toUpperCase()))
+                .toList();
+        return ticketRepository.saveAll(ticketList).map(this::entityToDTO);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findByUuid(ticketUuid)
                 .switchIfEmpty(Mono.error(new NoSuchElementException("No ticket with de ID: " + ticketUuid)))
                 .flatMap(ticketFound -> {
-                    if (!ticketFound.getTicketCode().equals(ticketCode) || !ticketFound.getIsUsed()) {
+                    if (!ticketFound.getTicketCode().equals(ticketCode) || ticketFound.getIsUsed()) {
                         return Mono.error(new IllegalArgumentException("The ticket code does not match with the ticket code: " + ticketCode));
                     }
                     ticketFound.setIsUsed(true);
@@ -69,9 +66,11 @@ public class TicketServiceImpl implements TicketService {
                 .userUuid(createTicketDTO.userUuid())
                 .orderUuid(createTicketDTO.orderUuid())
                 .eventUuid(createTicketDTO.eventUuid())
+                .ticketEventCategoryUuid(createTicketDTO.ticketEventCategoryUuid())
                 .ticketCategoryName(createTicketDTO.ticketCategoryName())
                 .build();
     }
+
     private TicketDTO entityToDTO(Ticket ticket) {
         return new TicketDTO(
                 ticket.getUuid(),

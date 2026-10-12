@@ -9,28 +9,34 @@ import com.seb.eventpass.orders.models.OrderStatus;
 import com.seb.eventpass.orders.models.TicketOrder;
 import com.seb.eventpass.orders.repositories.OrderRepository;
 import com.seb.eventpass.orders.repositories.TicketOrderRepository;
-import com.seb.eventpass.orders.rest.EventWebClient;
-import com.seb.eventpass.orders.rest.TicketWebClient;
+import com.seb.eventpass.orders.rest.EventClient;
+import com.seb.eventpass.orders.rest.TicketClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private final EventWebClient eventWebClient;
+    private final EventClient eventWebClient;
     private final OrderRepository orderRepository;
     private final TicketOrderRepository ticketOrderRepository;
-    private final TicketWebClient ticketWebClient;
+    private final TicketClient ticketClient;
 
     @Override
     @Transactional
@@ -103,12 +109,11 @@ public class OrderServiceImpl implements OrderService {
                                 .collectList()
                                 .flatMap(ticketsOrderList -> {
                                     Mono<Void> discountTicketsCapacity = Flux.fromIterable(ticketsOrderList)
-                                            .flatMap(ticketOrder -> eventWebClient.discountTicketCapacity(
-                                                    orderFound.getEventUuid(),
+                                            .concatMap(ticketOrder -> eventWebClient.discountTicketCapacity(
                                                     ticketOrder.getTicketCategoryUuid(),
                                                     ticketOrder.getTicketQuantity()
                                             )).then();
-
+                                    BigDecimal totalTickets = BigDecimal.valueOf(ticketsOrderList.stream().mapToDouble(TicketOrder::getTicketQuantity).sum());
                                     List<TicketDTO> createTicketsList = ticketsOrderList.stream()
                                             .flatMap(ticketOrder ->
                                                     IntStream.range(0, ticketOrder.getTicketQuantity()).mapToObj(i ->
@@ -122,14 +127,27 @@ public class OrderServiceImpl implements OrderService {
                                                             )
                                                     )
                                             ).toList();
+                                    log.info(createTicketsList.toString());
+                                    System.out.println(createTicketsList);
+                                    Mono<Void> createTickets = ticketClient.createTicket(createTicketsList)
+                                            .timeout(Duration.ofSeconds(30));
 
-                                    Mono<Void> createTickets = ticketWebClient.createTicket(Flux.fromIterable(createTicketsList)).then();
-                                    return Mono.when(discountTicketsCapacity, createTickets)
+                                    return discountTicketsCapacity
+                                            .then(createTickets)
                                             .then(Mono.defer(() -> {
                                                 orderFound.setOrderStatus(OrderStatus.APPROVED);
                                                 return orderRepository.save(orderFound);
                                             }))
-                                            .map(order -> entityToDTO(order, ticketsOrderList));
+                                            .map(order -> entityToDTO(order, ticketsOrderList))
+                                            .onErrorResume(WebClientResponseException.class, ex -> {
+                                                if (ex.getStatusCode() == HttpStatus.CONFLICT) {
+                                                    orderFound.setOrderStatus(OrderStatus.REJECTED);
+                                                    return orderRepository.save(orderFound)
+                                                            .flatMap(_ -> Mono.error(new ResponseStatusException(HttpStatus.CONFLICT, "Order Rejected: Insufficient ticket capacity")));
+                                                }
+                                                return Mono.error(ex);
+                                            });
+
                                 })
                 );
     }
@@ -148,6 +166,14 @@ public class OrderServiceImpl implements OrderService {
                                 .map(ticketOrderList -> entityToDTO(orderFound, ticketOrderList))
                 )
                 .switchIfEmpty(Mono.error(new NoSuchElementException("No order found with the id: " + uuid)));
+    }
+
+    @Override
+    public Flux<OrderDTO> getOrdersByUserUuid(UUID userUuid) {
+        return orderRepository.findByUserUuid(userUuid)
+                .flatMap(orderFound -> ticketOrderRepository.findByOrderId(orderFound.getId())
+                        .collectList()
+                        .map(ticketOrderList -> entityToDTO(orderFound, ticketOrderList)));
     }
 
 

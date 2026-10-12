@@ -6,6 +6,6 @@ public record TicketDTO(UUID paymentUuid,
                         UUID userUuid,
                         UUID orderUuid,
                         UUID eventUuid,
-                        UUID ticketCategoryUuid,
+                        UUID ticketEventCategoryUuid,
                         String ticketCategoryName) {
 }

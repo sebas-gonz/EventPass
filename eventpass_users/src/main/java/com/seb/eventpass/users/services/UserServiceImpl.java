@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ReactiveAuthenticationManager authenticationManager;
 
-    @Value("${SECRET_TOKEN_KEY}")
+    @Value("${secret.token.key}")
     private String SECRET_KEY;
 
     private final Long EXPIRATION_TIME = 864_000_000L;

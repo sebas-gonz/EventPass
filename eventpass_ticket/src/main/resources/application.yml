@@ -11,9 +11,9 @@ spring:
 
     flyway:
       enabled: true
-      url: jdbc:${spring.r2dbc.url}
-      user: ${spring.r2dbc.username}
-      password: ${spring.r2dbc.password}
+      url: jdbc:${DB_URL:postgresql://localhost:5432/tickets}
+      user: ${DB_USER:postgres}
+      password: ${DB_PWD:root}
       baseline-on-migrate: true
       default-schema: ticket
 
@@ -22,3 +22,7 @@ spring:
         enabled: always
 server:
   port: 8083
+
+secret:
+  token:
+    key: EventPass2026_Clave_super_secreta_para_firmar_el_jwt_987654321

@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class EventWebClient {
+public class EventClient {
     private final WebClient eventWebClient;
 
     public Mono<TicketEventCategoryDTO> getTicketCategory(UUID eventId, UUID ticketCategoryId) {
         return eventWebClient.get()
-                .uri("/events/{eventId}/ticket-categories/{ticketCategoryId}", eventId, ticketCategoryId)
+                .uri("/api/events/{eventId}/ticket-categories/{ticketCategoryId}", eventId, ticketCategoryId)
                 .retrieve()
                 .onStatus(HttpStatus.NOT_FOUND::equals, clientResponse -> Mono.error(new NoSuchElementException("ticketCategory not found")))
                 .onStatus(HttpStatus.BAD_REQUEST::equals, clientResponse -> Mono.error(new NoSuchElementException("bad request")))
@@ -25,13 +25,13 @@ public class EventWebClient {
                 .bodyToMono(TicketEventCategoryDTO.class);
     }
 
-    public Mono<TicketEventCategoryDTO> discountTicketCapacity(UUID eventId, UUID ticketCategoryId, Integer capacity) {
+    public Mono<TicketEventCategoryDTO> discountTicketCapacity(UUID ticketCategoryId, Integer capacity) {
         return eventWebClient.post()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .path("/events/{eventId}/ticket-categories/{ticketCategoryId}/discount-capacity")
+                                .path("/internal/ticket-categories/{ticketCategoryId}/discount-capacity")
                                 .queryParam("capacity", capacity)
-                                .build(eventId, ticketCategoryId)
+                                .build(ticketCategoryId)
                 )
                 .retrieve()
                 .bodyToMono(TicketEventCategoryDTO.class);

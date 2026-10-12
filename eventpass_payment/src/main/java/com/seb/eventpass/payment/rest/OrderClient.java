@@ -10,12 +10,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class OrderWebClient {
+public class OrderClient {
     private final WebClient orderWebClient;
 
     public Mono<Void> approveOrder(UUID orderUuid, UUID paymentUuid) {
         return orderWebClient.post()
-                .uri("/orders/{orderUuid}/approved", orderUuid)
+                .uri("/internal/order/{orderUuid}/approved", orderUuid)
                 .header("X-PAYMENT-UUID", paymentUuid.toString())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -24,7 +24,7 @@ public class OrderWebClient {
 
     public Mono<Void> rejectOrder(UUID orderUuid) {
         return orderWebClient.post()
-                .uri("/api/orders/{orderUuid}/rejected", orderUuid)
+                .uri("/internal/order/{orderUuid}/rejected", orderUuid)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Void.class);

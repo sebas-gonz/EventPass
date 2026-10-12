@@ -6,10 +6,12 @@ import com.seb.eventpass.ticket.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -18,28 +20,21 @@ import java.util.UUID;
 public class TicketController {
     private final TicketService  ticketService;
 
-    @PostMapping("/saveall")
-    @ResponseStatus(HttpStatus.CREATED)
-     public Flux<TicketDTO> saveAll(@RequestBody Flux<CreateTicketDTO> createTicketDTO) {
-        return ticketService.createTickets(createTicketDTO);
-    }
-
-    @PostMapping
-    public Mono<TicketDTO> createTicket(@RequestBody Mono<CreateTicketDTO> createTicketDTO) {
-        return createTicketDTO.flatMap(ticketService::createTicket);
-    }
-
     @GetMapping("/{ticketuuid}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<TicketDTO> getTicketByUuid(@PathVariable("ticketuuid") UUID ticketuuid) {
         return ticketService.getTicketByUuid(ticketuuid);
     }
 
     @GetMapping("/user")
-    public Flux<TicketDTO> getTicketsByUserUuid(@RequestHeader(name = "X-USER-UUID") UUID userUuid) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public Flux<TicketDTO> getTicketsByUserUuid(Principal principal) {
+        UUID userUuid = UUID.fromString(principal.getName());
         return ticketService.getTicketsByUserUuid(userUuid);
     }
 
-    @GetMapping("/{ticketuuid}/use")
+    @PostMapping("/{ticketuuid}/use")
+    @PreAuthorize("hasRole('STAFF')")
     public Mono<ResponseEntity<TicketDTO>> useTicket(@PathVariable("ticketuuid") UUID ticketuuid, @RequestParam String ticketCode) {
         return ticketService.useTicket(ticketuuid, ticketCode)
                 .map(ticketDTO ->
