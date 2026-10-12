@@ -8,27 +8,31 @@ spring:
           enabled: true
           routes:
             - id: users-service
-              uri: ${MS-USERS-URL:http://localhost:8084}
+              uri: ${MS_USERS_URL:http://localhost:8084}
               predicates:
                 - Path=/api/auth/**
+
             - id: events-service
               uri:
-                ${MS-EVENTS-URL:http://localhost:8080}
+                ${MS_EVENTS_URL:http://localhost:8080}
               predicates:
-                - Path=/api/events/** , /api/ticket
+                - Path=/api/events/**
+
             - id: orders-service
               uri:
-                ${MS-ORDERS-URL:http://localhost:8081}
+                ${MS_ORDERS_URL:http://localhost:8081}
               predicates:
                 - Path=/api/orders/**
             - id: payments-service
+
               uri:
-                ${MS-PAYMENT-URL:http://localhost:8082}
+                ${MS_PAYMENT_URL:http://localhost:8082}
               predicates:
                 - Path=/api/payments/**
+
             - id: tickets-service
               uri:
-                ${MS-TICKET-URL:http://localhost:8083}
+                ${MS_TICKET_URL:http://localhost:8083}
               predicates:
                 - Path=/api/tickets/**
 

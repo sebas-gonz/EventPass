@@ -1,0 +1,105 @@
+services:
+  #---------------- base de datos POSTGRESQL ----------------
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: eventpass_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: eventpass
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ------------- api-gateway
+  api-gateway:
+    build: ./eventpass_apigateway
+    container_name: ms_gateway
+    ports:
+      - "8085:8085"
+    environment:
+      - MS_USERS_URL=http://users-service:8084
+      - MS_EVENTS_URL=http://events-service:8080
+      - MS_ORDERS_URL=http://orders-service:8081
+      - MS_PAYMENT_URL=http://payments-service:8082
+      - MS_TICKET_URL=http://tickets-service:8083
+
+  # ------ users -------
+  users-service:
+    build: ./eventpass_users
+    container_name: ms_users
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres-db:5432/eventpass?currentSchema=users
+      - DB_USER=postgres
+      - DB_PWD=root
+
+  # ---------- events ----------
+  events-service:
+    build: ./eventpass_eventos
+    container_name: ms_events
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres-db:5432/eventpass?currentSchema=events
+      - DB_USER=postgres
+      - DB_PWD=root
+
+  # --------------- orders --------------
+  orders-service:
+    build: ./eventpass_orders
+    container_name: ms_orders
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres-db:5432/eventpass?currentSchema=orders
+      - DB_USER=postgres
+      - DB_PWD=root
+      - MS_EVENTS_URL=http://events-service:8080
+      - MS_TICKETS_URL=http://tickets-service:8083
+      - MICROSERVICES_EVENTS_URL=http://events-service:8080
+      - MICROSERVICES_TICKETS_URL=http://tickets-service:8083
+
+  # ------------------- payments -----------------
+  payments-service:
+    build: ./eventpass_payment
+    container_name: ms_payments
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres-db:5432/eventpass?currentSchema=payment
+      - DB_USER=postgres
+      - DB_PWD=root
+      - MS_ORDERS_URL=http://orders-service:8081
+      - MICROSERVICES_ORDERS_URL=http://orders-service:8081
+
+  # -------------- tickets ------------------------
+  tickets-service:
+    build: ./eventpass_ticket
+    container_name: ms_tickets
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres-db:5432/eventpass?currentSchema=tickets
+      - DB_USER=postgres
+      - DB_PWD=root

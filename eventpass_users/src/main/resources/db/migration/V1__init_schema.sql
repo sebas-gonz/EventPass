@@ -1,4 +1,4 @@
-CREATE TABLE "user"
+CREATE TABLE "users"
 (
 
     id         BIGSERIAL PRIMARY KEY,
@@ -13,6 +13,6 @@ CREATE TABLE "user"
     version INTEGER NOT NULL DEFAULT 0
 );
 
-CREATE INDEX idx_user_email ON "user" (email);
+CREATE INDEX idx_user_email ON "users" (email);
 
-CREATE INDEX idx_user_uuid ON "user" (uuid);
+CREATE INDEX idx_user_uuid ON "users" (uuid);

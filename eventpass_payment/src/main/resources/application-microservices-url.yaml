@@ -1,4 +1,4 @@
 microservices:
   orders:
-    url: ${MS-ORDERS-URL:http://localhost:8082/}
+    url: ${MS_ORDERS_URL:http://localhost:8081}
 

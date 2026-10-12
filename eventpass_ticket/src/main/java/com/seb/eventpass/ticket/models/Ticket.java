@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
 
-@Table(name = "tickets")
+@Table(name = "tickets", schema = "ticket")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor

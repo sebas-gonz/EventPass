@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "user")
+@Table(name = "users", schema = "user")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor

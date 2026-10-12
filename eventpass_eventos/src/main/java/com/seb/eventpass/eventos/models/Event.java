@@ -11,7 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 
-@Table(name = "events")
+@Table(name = "events", schema = "events")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor

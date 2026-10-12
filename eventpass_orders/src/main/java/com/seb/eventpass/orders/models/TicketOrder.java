@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Table(name = "ticket_order")
+@Table(name = "ticket_order", schema = "orders")
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
