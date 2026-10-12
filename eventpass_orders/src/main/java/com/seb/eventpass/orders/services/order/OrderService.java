@@ -5,6 +5,7 @@ import com.seb.eventpass.orders.dto.responses.OrderDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface OrderService {
@@ -14,4 +15,5 @@ public interface OrderService {
     Mono<OrderDTO> approveOrder (UUID uuid, UUID paymentUuid);
     Mono<OrderDTO> rejectOrder (UUID uuid);
     Flux<OrderDTO> getOrdersByUserUuid(UUID userUuid);
+    Mono<BigDecimal> getAmountFromOrder(UUID orderuuid);
 }

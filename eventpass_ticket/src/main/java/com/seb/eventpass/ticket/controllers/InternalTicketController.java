@@ -22,8 +22,8 @@ public class InternalTicketController {
     @PostMapping("/saveall")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public Flux<TicketDTO> saveAll(@Valid @RequestBody List<CreateTicketDTO> createTicketDTO) {
-        return ticketService.createTickets(createTicketDTO);
+    public Mono<List<TicketDTO>> saveAll(@Valid @RequestBody List<CreateTicketDTO> createTicketDTO) {
+        return ticketService.createTickets(createTicketDTO).collectList();
     }
 
     @PostMapping

@@ -176,6 +176,11 @@ public class OrderServiceImpl implements OrderService {
                         .map(ticketOrderList -> entityToDTO(orderFound, ticketOrderList)));
     }
 
+    @Override
+    public Mono<BigDecimal> getAmountFromOrder(UUID orderuuid) {
+        return orderRepository.getTotalAmountFromOrder(orderuuid);
+    }
+
 
     private OrderDTO entityToDTO(Order order, List<TicketOrder> ticketOrders) {
         return new OrderDTO(

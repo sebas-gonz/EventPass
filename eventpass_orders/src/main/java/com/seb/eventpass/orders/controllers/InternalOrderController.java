@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -26,5 +27,11 @@ public class InternalOrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Mono<OrderDTO> rejectOrder(@PathVariable UUID orderuuid) {
         return orderService.rejectOrder(orderuuid);
+    }
+
+    @GetMapping("/{orderuuid}/amount")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public Mono<BigDecimal> getOrderAmount(@PathVariable UUID orderuuid) {
+        return orderService.getAmountFromOrder(orderuuid);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Component
@@ -28,5 +29,13 @@ public class OrderClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Void.class);
+    }
+
+    public Mono<BigDecimal> getTotalAmountFromOrder(UUID orderuuid) {
+        return orderWebClient.get()
+                .uri("/internal/order/{orderUuid}/amount", orderuuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(BigDecimal.class);
     }
 }

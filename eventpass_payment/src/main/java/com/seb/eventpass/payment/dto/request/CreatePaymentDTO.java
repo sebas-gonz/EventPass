@@ -20,8 +20,5 @@ public record CreatePaymentDTO(
 
         @NotBlank(message = "La transaccion necesito del codigo de seguridad.")
         @Size(min = 1, max = 3, message = "Ingrese un codigo cvv valido.")
-        String cvv,
-
-        @NotNull(message = "El monto de la transaccion no esta definido.")
-        BigDecimal amount) {
+        String cvv ) {
 }
