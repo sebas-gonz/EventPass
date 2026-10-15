@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for eventpass-eventos" enabled="true">
+      <profile name="Annotation profile for eventpass_users" enabled="true">
         <sourceOutputDir name="../generated-sources/annotations" />
         <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
         <processorPath useClasspath="false">
@@ -19,29 +19,8 @@
         <module name="eventpass_users.main" />
         <module name="eventpass_payment.test" />
         <module name="eventpass_ticket.test" />
-        <module name="eventpass_ticket.main" />
-      </profile>
-      <profile name="Annotation profile for eventpass-eventos.main" enabled="true">
-        <sourceOutputDir name="../generated-sources/annotations" />
-        <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
-        <processorPath useClasspath="false">
-          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
-          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
-        </processorPath>
         <module name="eventpass-eventos.main" />
-      </profile>
-      <profile name="Annotation profile for eventpass-eventos.test" enabled="true">
-        <sourceOutputDir name="../generated-sources/annotations" />
-        <sourceTestOutputDir name="../generated-test-sources/test-annotations" />
-        <processorPath useClasspath="false">
-          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
-          <entry name="/home/sebas/.m2/repository/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="/home/sebas/.m2/repository/org/springframework/boot/spring-boot-configuration-processor/4.1.1/spring-boot-configuration-processor-4.1.1.jar" />
-        </processorPath>
-        <module name="eventpass-eventos.test" />
+        <module name="eventpass_ticket.main" />
       </profile>
     </annotationProcessing>
   </component>
